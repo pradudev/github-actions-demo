@@ -8,6 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: printenv
+      - run: echo $GITHUB_ENV
       - shell: pwsh
         run: |
           $PSVersionTable.PSVersion
@@ -17,7 +18,8 @@ jobs:
           echo "CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}"
       - shell: bash
         run: |
-          echo "::set-env name=MY_NAME::John"
+          myName=John
+          echo "MY_NAME=$myName" >> $GITHUB_ENV
       - shell: bash
         run: |
           echo "MY_NAME: $MY_NAME"    
