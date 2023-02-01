@@ -23,11 +23,17 @@ jobs:
       - shell: bash
         run: |
           echo "MY_NAME: $MY_NAME"    
+      - id: gen_output
+        shell: bash
+        run: |
+          echo "::set-output name=my_age::100"
+    outputs:
+      my_age: ${{ steps.gen_output.outputs.my_age }}
   
-  # deploy:
-  #   runs-on: ubuntu-latest
-  #   needs: [build]
-  #   steps:
-  #     - shell: bash
-  #       run: |
-  #         expr 1 + 1 > output.log
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - shell: bash
+        run: |
+          echo "my_age: ${{ needs.build.outputs.my_age }}"
