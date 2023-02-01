@@ -13,8 +13,8 @@ jobs:
           $PSVersionTable.PSVersion
       - shell: bash
         run: |
-          echo "${{ env.CLIENT_ID }}"
-          echo "${{ secrets.CLIENT_SECRET }}"
+          echo "CLIENT_ID: ${{ vars.CLIENT_ID }}"
+          echo "CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}"
   
   # deploy:
   #   runs-on: ubuntu-latest
