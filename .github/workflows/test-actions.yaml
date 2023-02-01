@@ -1,6 +1,6 @@
 name: 'Test Workflow'
 
-on: [workflow_dispatch]
+on: [workflow_dispatch, push]
 
 jobs:
   build:
@@ -13,17 +13,13 @@ jobs:
           $PSVersionTable.PSVersion
       - shell: bash
         run: |
-          expr 1 + 1 > output.log
-      - name: Upload output file
-        uses: actions/upload-artifact@v3
-        with:
-          name: output-log-file
-          path: output.log
+          echo "${{ env.CLIENT_ID }}"
+          echo "${{ secrets.CLIENT_SECRET }}"
   
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download a single artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: output-log-file
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: [build]
+  #   steps:
+  #     - shell: bash
+  #       run: |
+  #         expr 1 + 1 > output.log
