@@ -15,6 +15,12 @@ jobs:
         run: |
           echo "CLIENT_ID: ${{ vars.CLIENT_ID }}"
           echo "CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}"
+      - shell: bash
+        run: |
+          echo "::set-env name=MY_NAME::John"
+      - shell: bash
+        run: |
+          echo "MY_NAME: $MY_NAME"    
   
   # deploy:
   #   runs-on: ubuntu-latest
