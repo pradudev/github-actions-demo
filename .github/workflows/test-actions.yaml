@@ -26,7 +26,7 @@ jobs:
       - id: gen_output
         shell: bash
         run: |
-          echo "::set-output name=my_age::100"
+          echo "my_age=200" >> $GITHUB_OUTPUT
     outputs:
       my_age: ${{ steps.gen_output.outputs.my_age }}
   
