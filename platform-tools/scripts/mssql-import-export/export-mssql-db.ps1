@@ -4,9 +4,9 @@ Param (
 )
 
 # Get values from ENV variables
-[string]$dbResourceGroupName = $env:DB_RESOURCEGROUP_NAME
-[string]$dbServerName = $env:DB_SERVER_NAME
-[string]$dbName = $env:DB_NAME
+[string]$dbResourceGroupName = $env:AZURE_SQL_DB_RESOURCEGROUP_NAME
+[string]$dbServerName = $env:AZURE_SQL_DB_SERVER_NAME
+[string]$dbName = $env:AZURE_SQL_DB_NAME
 [string]$storageAccountAccessKey = $env:STORAGEACCOUNT_ACCESS_KEY
 [string]$storageAccountName = $env:STORAGEACCOUNT_NAME
 [string]$storageContainerName = $env:STORAGECONTAINER_NAME
@@ -59,14 +59,14 @@ $exportRequest = New-AzSqlDatabaseExport -ResourceGroupName $dbResourceGroupName
 
 # Check the status of the export
 $exportStatus = Get-AzSqlDatabaseImportExportStatus -OperationStatusLink $exportRequest.OperationStatusLink
-[Console]::Write("Exporting")
+Write-Host -NoNewline "Exporting"
 while ($exportStatus.Status -eq "InProgress")
 {
     Start-Sleep -s 10
     $exportStatus = Get-AzSqlDatabaseImportExportStatus -OperationStatusLink $exportRequest.OperationStatusLink
-    [Console]::Write(".")
+    Write-Host -NoNewline "."
 }
-[Console]::WriteLine("")
+Write-Host ""
 $exportStatus
 
 # Turn OFF "Allow access to Azure services"
