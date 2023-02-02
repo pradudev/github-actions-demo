@@ -7,7 +7,7 @@ Param (
 [string]$dbResourceGroupName = $env:DB_RESOURCEGROUP_NAME
 [string]$dbServerName = $env:DB_SERVER_NAME
 [string]$dbName = $env:DB_NAME
-[securestring]$storageAccountAccessKey = ConvertTo-SecureString $env:STORAGEACCOUNT_ACCESS_KEY -AsPlainText -Force
+[securestring]$storageAccountAccessKey = $(ConvertTo-SecureString $env:STORAGEACCOUNT_ACCESS_KEY -AsPlainText -Force)
 [string]$storageAccountName = $env:STORAGEACCOUNT_NAME
 [string]$storageContainerName = $env:STORAGECONTAINER_NAME
 [string]$keyVaultName = $env:KEYVAULT_NAME
