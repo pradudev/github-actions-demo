@@ -12,6 +12,17 @@ jobs:
         run: |
           $PSVersionTable.PSVersion
           Get-InstalledModule | Format-Table
+      - name: Run Azure PowerShell script    
+        uses: azure/powershell@v1
+        with:
+          inlineScript: |
+            if (Get-Module -ListAvailable -Name Az) {
+              Write-Host "Module exists"
+            } 
+            else {
+                Write-Host "Module does not exist"
+            }
+          azPSVersion: '3.1.0'    
       - shell: pwsh
         run: |
           if (Get-Module -ListAvailable -Name Az) {
