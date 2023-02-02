@@ -17,10 +17,10 @@ on:
     #     description: "environment"
     #     type: string
 
-defaults:
-  run:
-    shell: bash
-    working-directory: "platform-tools/scripts/mssql-import-export/"
+# defaults:
+#   run:
+#     shell: bash
+#     working-directory: "platform-tools/scripts/mssql-import-export/"
 
 jobs:
   import-db:

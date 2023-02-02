@@ -7,7 +7,7 @@ Param (
 [string]$dbResourceGroupName = $env:DB_RESOURCEGROUP_NAME
 [string]$dbServerName = $env:DB_SERVER_NAME
 [string]$dbName = $env:DB_NAME
-[securestring]$storageAccountAccessKey = $env:STORAGEACCOUNT_ACCESS_KEY
+[securestring]$storageAccountAccessKey = ConvertTo-SecureString $env:STORAGEACCOUNT_ACCESS_KEY -AsPlainText -Force
 [string]$storageAccountName = $env:STORAGEACCOUNT_NAME
 [string]$storageContainerName = $env:STORAGECONTAINER_NAME
 [string]$keyVaultName = $env:KEYVAULT_NAME
@@ -46,7 +46,7 @@ $exportRequest = New-AzSqlDatabaseExport -ResourceGroupName $dbResourceGroupName
     -ServerName $dbServerName `
     -DatabaseName $dbName `
     -StorageKeytype "StorageAccessKey" `
-    -StorageKey $saAccessKey `
+    -StorageKey $storageAccountAccessKey `
     -StorageUri $bacpacUri `
     -AdministratorLogin $sqlAdminUserName `
     -AdministratorLoginPassword $sqlAdminPassword
