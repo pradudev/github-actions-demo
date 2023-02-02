@@ -23,7 +23,7 @@ on:
 #     working-directory: "platform-tools/scripts/mssql-import-export/"
 
 jobs:
-  import-db:
+  export_db:
     runs-on: ubuntu-latest
     #environment: bigw-platform-${{inputs.region}}-${{ inputs.environment }}-plan  
     steps:
@@ -41,6 +41,7 @@ jobs:
         enable-AzPSSession: true
 
     - name: Azure PowerShell - Export DB to .bacpac file
+      id: export_db
       uses: azure/powershell@v1
       with:
         inlineScript: |
@@ -56,3 +57,22 @@ jobs:
         KEYVAULT_NAME: "bigw-devops-dev-kv"
         SQLADMIN_USERNAME_KV_SECRET_NAME: "BIGW-MSSQL-DEV-AAE-MARKETPLACES-PRODUCT-SRV--ADMINISTRATOR-LOGIN"
         SQLADMIN_PASSWORD_KV_SECRET_NAME: "BIGW-MSSQL-DEV-AAE-MARKETPLACES-PRODUCT-SRV--ADMINISTRATOR-LOGIN-PASSWORD"  
+
+    outputs:
+        bacpac_file_name: ${{ steps.export_db.outputs.BACKPAC_FILE_NAME }}
+
+  import-db:
+    runs-on: ubuntu-latest
+    #environment: bigw-platform-${{inputs.region}}-${{ inputs.environment }}-plan  
+    needs: [export_db]
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: true
+        fetch-depth: 0    
+
+    - name: Get bacpack path
+      shell: pwsh
+      run: Write-Output "BACPAC path - ${{ needs.export_db.outputs.bacpac_file_name }}"        

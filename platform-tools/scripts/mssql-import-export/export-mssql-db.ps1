@@ -73,3 +73,6 @@ $exportStatus
 if ($hasFirewallExceptionFromScript){
     Remove-AzSqlServerFirewallRule -ResourceGroupName $dbResourceGroupName -ServerName $dbServerName -FirewallRuleName "AllowAllAzureIPs"
 }
+
+# Output the bacpac file path in the GitHub Action
+"BACKPAC_FILE_NAME=$bacpacUri" >> $env:GITHUB_OUTPUT
