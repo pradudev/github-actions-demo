@@ -13,6 +13,7 @@ jobs:
         run: |
           $PSVersionTable.PSVersion
           Get-InstalledModule | Format-Table
+          az -v
       - shell: bash
         run: |
           echo "CLIENT_ID: ${{ vars.CLIENT_ID }}"
