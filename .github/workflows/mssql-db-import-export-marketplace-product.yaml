@@ -1,0 +1,58 @@
+name: 'MSSQL Import/Export > Marketplace product DB'
+
+on:
+  push:
+    paths:
+      - platform-tools/scripts/mssql-import-export/**
+  workflow_dispatch:
+    # inputs:
+    #   region:
+    #     required: true
+    #     default: "aueast"
+    #     description: "region"
+    #     type: string
+    #   environment:
+    #     required: true
+    #     default: "devtest"
+    #     description: "environment"
+    #     type: string
+
+defaults:
+  run:
+    shell: bash
+    working-directory: "platform-tools/scripts/mssql-import-export/"
+
+jobs:
+  import-db:
+    runs-on: ubuntu-latest
+    #environment: bigw-platform-${{inputs.region}}-${{ inputs.environment }}-plan  
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: true
+        fetch-depth: 0
+
+    - name: Log in with Azure
+      uses: azure/login@v1
+      with:
+        creds: '{"clientId": "${{ secrets.ARM_CLIENT_ID }}", "clientSecret": "${{ secrets.ARM_CLIENT_SECRET }}", "subscriptionId": "${{ secrets.ARM_SUBSCRIPTION_ID }}", "tenantId": "${{ secrets.ARM_TENANT_ID }}"}'
+        enable-AzPSSession: true
+
+    - name: Azure PowerShell - Export DB to .bacpac file
+      uses: azure/powershell@v1
+      with:
+        inlineScript: |
+          ./export-mssql-db.ps1
+        azPSVersion: "latest"
+      env:
+        DB_RESOURCEGROUP_NAME: "bigw-rg-dev-aae-marketplaces"
+        DB_SERVER_NAME: "bigw-mssql-dev-aae-marketplaces-product-srv"
+        DB_NAME: "marketplaces-product"
+        STORAGEACCOUNT_ACCESS_KEY: ${{ secrets.MSSQL_BACKUP_STORAGEACCOUNT_KEY }}
+        STORAGEACCOUNT_NAME: "pradeepmssqlbackup"
+        STORAGECONTAINER_NAME: "marketplaces-product-bkps"
+        KEYVAULT_NAME: "bigw-devops-dev-kv"
+        SQLADMIN_USERNAME_KV_SECRET_NAME: "BIGW-MSSQL-DEV-AAE-MARKETPLACES-PRODUCT-SRV--ADMINISTRATOR-LOGIN"
+        SQLADMIN_PASSWORD_KV_SECRET_NAME: "BIGW-MSSQL-DEV-AAE-MARKETPLACES-PRODUCT-SRV--ADMINISTRATOR-LOGIN-PASSWORD"  
