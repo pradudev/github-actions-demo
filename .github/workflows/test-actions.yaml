@@ -8,13 +8,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: printenv
-      - run: echo $GITHUB_ENV
       - shell: pwsh
         run: |
           $PSVersionTable.PSVersion
           Get-InstalledModule | Format-Table
-          New-AzSqlDatabaseExport
-          az -v
+      - shell: pwsh
+        run: |
+          if (Get-Module -ListAvailable -Name Az) {
+              Write-Host "Module exists"
+          } 
+          else {
+              Write-Host "Module does not exist"
+          }
       - shell: bash
         run: |
           echo "CLIENT_ID: ${{ vars.CLIENT_ID }}"
