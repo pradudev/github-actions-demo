@@ -1,4 +1,4 @@
-name: 'Test Workflow'
+name: 'Test Workflow #Testing'
 
 on: [workflow_dispatch, push]
 
