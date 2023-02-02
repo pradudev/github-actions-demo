@@ -12,7 +12,7 @@ jobs:
       - shell: pwsh
         run: |
           $PSVersionTable.PSVersion
-          Get-InstalledModule
+          Get-InstalledModule | Format-Table
       - shell: bash
         run: |
           echo "CLIENT_ID: ${{ vars.CLIENT_ID }}"
