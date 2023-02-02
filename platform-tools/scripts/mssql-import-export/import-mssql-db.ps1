@@ -7,7 +7,7 @@ Param (
 [string]$dbResourceGroupName = $env:AZURE_SQL_DB_RESOURCEGROUP_NAME
 [string]$dbServerName = $env:AZURE_SQL_DB_SERVER_NAME
 [string]$dbNamePrefix = $env:AZURE_SQL_DB_NAME_PREFIX
-[string]$bacpacUri = $env:BACPAC_URI
+[uri]$bacpacUri = $env:BACPAC_URI
 [string]$storageAccountAccessKey = $env:STORAGEACCOUNT_ACCESS_KEY
 [string]$dbMaxSizeBytes = $env:AZURE_SQL_DB_MAX_SIZE_BYTES
 [string]$dbEdition = $env:AZURE_SQL_DB_EDITION

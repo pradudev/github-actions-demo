@@ -1,5 +1,5 @@
-[string]$keyVaultName = "bigw-devops-dev-kv"
-[string]$SqlAdminPasswordKvSecret = "BIGW-MSSQL-DEV-AAE-MARKETPLACES-PRODUCT-SRV--ADMINISTRATOR-LOGIN-PASSWORD"
+[uri]$bacpacUri = "https://pradeepmssqlbackup.blob.core.windows.net/marketplaces-product-bkps/202302020954.bacpac"
 
+$bacpacFileNameWithoutExt = [System.IO.Path]::GetFileNameWithoutExtension($bacpacUri.Segments[-1])
 
-Get-AzKeyVaultSecret -VaultName $keyVaultName -Name $SqlAdminPasswordKvSecret -AsPlainText | ConvertTo-SecureString -AsPlainText -Force
+Write-Host "Creating a new DB: $bacpacFileNameWithoutExt"
