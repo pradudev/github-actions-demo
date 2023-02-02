@@ -44,7 +44,7 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |
-          .\export-mssql-db.ps1
+          pwd
         azPSVersion: "latest"
       env:
         DB_RESOURCEGROUP_NAME: "bigw-rg-dev-aae-marketplaces"
