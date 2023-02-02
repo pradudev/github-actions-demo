@@ -34,16 +34,17 @@ $hasFirewallExceptionFromPortal = $null -ne $(Get-AzSqlServerFirewallRule -Resou
     -FirewallRuleName "AllowAllWindowsAzureIps" `
     -ErrorAction SilentlyContinue)
 
-
 $hasFirewallExceptionFromScript = $null -ne $(Get-AzSqlServerFirewallRule -ResourceGroupName $dbResourceGroupName `
     -ServerName $dbServerName `
     -FirewallRuleName "AllowAllAzureIPs" `
     -ErrorAction SilentlyContinue)    
 
-Write-Host ("Need a firewall exception?: $needFwException")
+$needNewFwException = ($hasFirewallExceptionFromPortal -eq $false) -and ($hasFirewallExceptionFromScript -eq $false)
+
+Write-Host ("Need a firewall exception in the Storage Account?: $needNewFwException")
 
 # Turn ON "Allow access to Azure services"
-if (($hasFirewallExceptionFromPortal -eq $false) -and ($hasFirewallExceptionFromScript -eq $false)){
+if ($needNewFwException){
     New-AzSqlServerFirewallRule -ResourceGroupName $dbResourceGroupName  -ServerName $dbServerName -AllowAllAzureIPs
 }
 

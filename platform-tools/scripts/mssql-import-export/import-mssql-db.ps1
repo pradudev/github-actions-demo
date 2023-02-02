@@ -16,6 +16,7 @@ Param (
 [string]$sqlAdminUserNameKvSecretName = $env:SQLADMIN_USERNAME_KV_SECRET_NAME
 [string]$sqlAdminPasswordKvSecretName = $env:SQLADMIN_PASSWORD_KV_SECRET_NAME
 
+Write-Host "bacpac from script: $bacpacUri"
 
 # Fetch SQL Server Admin Credentials from the Key Vault
 $sqlAdminUserName = $(Get-AzKeyVaultSecret -VaultName $keyVaultName -Name $sqlAdminUserNameKvSecretName -AsPlainText)
@@ -28,16 +29,17 @@ $hasFirewallExceptionFromPortal = $null -ne $(Get-AzSqlServerFirewallRule -Resou
     -FirewallRuleName "AllowAllWindowsAzureIps" `
     -ErrorAction SilentlyContinue)
 
-
 $hasFirewallExceptionFromScript = $null -ne $(Get-AzSqlServerFirewallRule -ResourceGroupName $dbResourceGroupName `
     -ServerName $dbServerName `
     -FirewallRuleName "AllowAllAzureIPs" `
     -ErrorAction SilentlyContinue)    
 
-Write-Host ("Need a firewall exception?: $needFwException")
+$needNewFwException = ($hasFirewallExceptionFromPortal -eq $false) -and ($hasFirewallExceptionFromScript -eq $false)
+
+Write-Host ("Need a firewall exception in the Storage Account?: $needNewFwException")
 
 # Turn ON "Allow access to Azure services"
-if (($hasFirewallExceptionFromPortal -eq $false) -and ($hasFirewallExceptionFromScript -eq $false)){
+if ($needNewFwException){
     New-AzSqlServerFirewallRule -ResourceGroupName $dbResourceGroupName  -ServerName $dbServerName -AllowAllAzureIPs
 }
 

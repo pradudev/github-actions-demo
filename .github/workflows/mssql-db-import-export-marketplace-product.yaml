@@ -35,29 +35,35 @@ jobs:
         submodules: true
         fetch-depth: 0
 
-    - name: Log in with Azure
-      uses: azure/login@v1
-      with:
-        creds: '{"clientId": "${{ secrets.ARM_CLIENT_ID }}", "clientSecret": "${{ secrets.ARM_CLIENT_SECRET }}", "subscriptionId": "${{ secrets.ARM_SUBSCRIPTION_ID }}", "tenantId": "${{ secrets.ARM_TENANT_ID }}"}'
-        enable-AzPSSession: true
+    # - name: Log in with Azure
+    #   uses: azure/login@v1
+    #   with:
+    #     creds: '{"clientId": "${{ secrets.ARM_CLIENT_ID }}", "clientSecret": "${{ secrets.ARM_CLIENT_SECRET }}", "subscriptionId": "${{ secrets.ARM_SUBSCRIPTION_ID }}", "tenantId": "${{ secrets.ARM_TENANT_ID }}"}'
+    #     enable-AzPSSession: true
 
-    - name: Azure PowerShell - Export DB to .bacpac file
-      id: export_db
-      uses: azure/powershell@v1
-      with:
-        inlineScript: |
-          .\platform-tools\scripts\mssql-import-export\export-mssql-db.ps1
-        azPSVersion: "latest"
-      env:
-        AZURE_SQL_DB_RESOURCEGROUP_NAME: "bigw-rg-dev-aae-marketplaces"
-        AZURE_SQL_DB_SERVER_NAME: "bigw-mssql-dev-aae-marketplaces-product-srv"
-        AZURE_SQL_DB_NAME: "marketplaces-product"
-        STORAGEACCOUNT_ACCESS_KEY: ${{ secrets.MSSQL_BACKUP_STORAGEACCOUNT_KEY }}
-        STORAGEACCOUNT_NAME: "pradeepmssqlbackup"
-        STORAGECONTAINER_NAME: "marketplaces-product-bkps"
-        KEYVAULT_NAME: "bigw-devops-dev-kv"
-        SQLADMIN_USERNAME_KV_SECRET_NAME: "BIGW-MSSQL-DEV-AAE-MARKETPLACES-PRODUCT-SRV--ADMINISTRATOR-LOGIN"
-        SQLADMIN_PASSWORD_KV_SECRET_NAME: "BIGW-MSSQL-DEV-AAE-MARKETPLACES-PRODUCT-SRV--ADMINISTRATOR-LOGIN-PASSWORD"  
+    # - name: Azure PowerShell - Export DB to .bacpac file
+    #   id: export_db
+    #   uses: azure/powershell@v1
+    #   with:
+    #     inlineScript: |
+    #       .\platform-tools\scripts\mssql-import-export\export-mssql-db.ps1
+    #     azPSVersion: "latest"
+    #   env:
+    #     AZURE_SQL_DB_RESOURCEGROUP_NAME: "bigw-rg-dev-aae-marketplaces"
+    #     AZURE_SQL_DB_SERVER_NAME: "bigw-mssql-dev-aae-marketplaces-product-srv"
+    #     AZURE_SQL_DB_NAME: "marketplaces-product"
+    #     STORAGEACCOUNT_ACCESS_KEY: ${{ secrets.MSSQL_BACKUP_STORAGEACCOUNT_KEY }}
+    #     STORAGEACCOUNT_NAME: "pradeepmssqlbackup"
+    #     STORAGECONTAINER_NAME: "marketplaces-product-bkps"
+    #     KEYVAULT_NAME: "bigw-devops-dev-kv"
+    #     SQLADMIN_USERNAME_KV_SECRET_NAME: "BIGW-MSSQL-DEV-AAE-MARKETPLACES-PRODUCT-SRV--ADMINISTRATOR-LOGIN"
+    #     SQLADMIN_PASSWORD_KV_SECRET_NAME: "BIGW-MSSQL-DEV-AAE-MARKETPLACES-PRODUCT-SRV--ADMINISTRATOR-LOGIN-PASSWORD"  
+
+    - id: export_db
+      shell: pwsh
+      run: |
+        $bacpacUri = "https://pradeepmssqlbackup.blob.core.windows.net/marketplaces-product-bkps/202302020954.bacpac"
+        "BACKPAC_FILE_NAME=$bacpacUri" >> $env:GITHUB_OUTPUT
 
     outputs:
         bacpac_file_name: ${{ steps.export_db.outputs.BACKPAC_FILE_NAME }}
@@ -75,9 +81,9 @@ jobs:
         submodules: true
         fetch-depth: 0    
 
-    # - name: Get bacpack path
-    #   shell: pwsh
-    #   run: Write-Output "BACPAC path - ${{ needs.export_db.outputs.bacpac_file_name }}"
+    - name: Get bacpack path
+      shell: pwsh
+      run: Write-Output "BACPAC path - ${{ needs.export_db.outputs.bacpac_file_name }}"
     
     - name: Log in with Azure
       uses: azure/login@v1
