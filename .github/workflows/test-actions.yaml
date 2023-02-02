@@ -13,6 +13,7 @@ jobs:
         run: |
           $PSVersionTable.PSVersion
           Get-InstalledModule | Format-Table
+          New-AzSqlDatabaseExport
           az -v
       - shell: bash
         run: |
