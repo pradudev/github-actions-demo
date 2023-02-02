@@ -29,15 +29,21 @@ Write-Host "Export to Bacpac file: $bacpacUri"
 
 
 # Check firewall exception
-$needFwException = $null -eq $(Get-AzSqlServerFirewallRule -ResourceGroupName $dbResourceGroupName `
+$hasFirewallExceptionFromPortal = $null -ne $(Get-AzSqlServerFirewallRule -ResourceGroupName $dbResourceGroupName `
     -ServerName $dbServerName `
     -FirewallRuleName "AllowAllWindowsAzureIps" `
     -ErrorAction SilentlyContinue)
 
+
+$hasFirewallExceptionFromScript = $null -ne $(Get-AzSqlServerFirewallRule -ResourceGroupName $dbResourceGroupName `
+    -ServerName $dbServerName `
+    -FirewallRuleName "AllowAllAzureIPs" `
+    -ErrorAction SilentlyContinue)    
+
 Write-Host ("Need a firewall exception?: $needFwException")
 
 # Turn ON "Allow access to Azure services"
-if ($needFwException){
+if (($hasFirewallExceptionFromPortal -eq $false) -and ($hasFirewallExceptionFromScript -eq $false)){
     New-AzSqlServerFirewallRule -ResourceGroupName $dbResourceGroupName  -ServerName $dbServerName -AllowAllAzureIPs
 }
 
@@ -64,6 +70,6 @@ while ($exportStatus.Status -eq "InProgress")
 $exportStatus
 
 # Turn OFF "Allow access to Azure services"
-if ($needFwException){
+if ($hasFirewallExceptionFromScript){
     Remove-AzSqlServerFirewallRule -ResourceGroupName $dbResourceGroupName -ServerName $dbServerName -FirewallRuleName "AllowAllAzureIPs"
 }
