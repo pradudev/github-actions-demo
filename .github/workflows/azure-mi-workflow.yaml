@@ -1,0 +1,32 @@
+name: 'Azure MI Workflow'
+
+on: [workflow_dispatch, push]
+
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write
+
+jobs:
+  access_azure:
+    name: Access Azure
+    runs-on: ubuntu-latest
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3.3.0
+      with:
+        submodules: true
+        fetch-depth: 0
+
+    - name: Log in with Azure
+      uses: azure/login@v1
+      with:
+        client-id: ${{ vars.ARM_MI_CLIENT_ID }}
+        tenant-id: ${{ vars.ARM_TENANT_ID }}
+        subscription-id: ${{ vars.ARM_SUBSCRIPTION_ID }}
+        enable-AzPSSession: true
+
+    - shell: bash
+      run: |
+        az group list --query "[].name"
