@@ -22,4 +22,4 @@ jobs:
 
     - shell: bash
       run: |
-        az group list
+        az group list --query "[].name"
