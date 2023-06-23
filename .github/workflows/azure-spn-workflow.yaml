@@ -1,0 +1,25 @@
+name: 'Azure SPN Workflow'
+
+on: [workflow_dispatch, push]
+
+jobs:
+  access_azure:
+    name: Access Azure
+    runs-on: ubuntu-latest
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3.3.0
+      with:
+        submodules: true
+        fetch-depth: 0
+
+    - name: Log in with Azure
+      uses: azure/login@v1
+      with:
+        creds: '{"clientId": "${{ vars.ARM_CLIENT_ID }}", "clientSecret": "${{ secrets.ARM_CLIENT_SECRET }}", "subscriptionId": "${{ vars.ARM_SUBSCRIPTION_ID }}", "tenantId": "${{ vars.ARM_TENANT_ID }}"}'
+        enable-AzPSSession: true
+
+    - shell: bash
+      run: |
+        az group list
