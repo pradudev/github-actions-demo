@@ -18,7 +18,7 @@ jobs:
     - name: Log in with Azure
       uses: azure/login@v1
       with:
-        creds: '{"clientId": "${{ secrets.ARM_CLIENT_ID }}", "clientSecret": "${{ secrets.ARM_CLIENT_SECRET }}", "subscriptionId": "${{ secrets.ARM_SUBSCRIPTION_ID }}", "tenantId": "${{ secrets.ARM_TENANT_ID }}"}'
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
 
     - name: Azure CLI script
