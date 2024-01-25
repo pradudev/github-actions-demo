@@ -1,6 +1,18 @@
 name: 'Test ENV Approval Workflow'
 
-on: [workflow_dispatch]
+on:
+  workflow_dispatch:
+    inputs:
+      query:
+        type: string
+        description: Az CLI query
+        required: true
+        default: '[].name'
+      count:
+        type: number
+        description: Resource Count
+        required: true
+        default: 7
 
 jobs:
   deploy_dev:
@@ -26,4 +38,4 @@ jobs:
       with:
         azcliversion: latest
         inlineScript: |
-          az account show
+          az group list --query "${{ inputs.query }} "
