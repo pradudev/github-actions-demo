@@ -1,6 +1,6 @@
 name: 'Test ENV Approval Workflow'
 
-on: []
+on: [workflow_dispatch]
 
 jobs:
   deploy_dev:
