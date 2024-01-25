@@ -1,6 +1,6 @@
 name: 'Azure MI Workflow'
 
-on: [workflow_dispatch, push]
+on: [workflow_dispatch]
 
 permissions:
   contents: read

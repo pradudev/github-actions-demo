@@ -1,6 +1,7 @@
 name: 'Azure SPN Workflow'
 
-on: [workflow_dispatch, push]
+# on: [workflow_dispatch, push]
+on: [workflow_dispatch]
 
 jobs:
   access_azure:
