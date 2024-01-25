@@ -29,3 +29,11 @@ jobs:
     if: github.event.inputs.env == 'dev'
     steps:
       - run: echo "ENV - ${{github.event.inputs.env}}"
+
+  deploy_test:
+    name: Deploy TEST
+    runs-on: ubuntu-latest
+    environment: test
+    if: github.event.inputs.env == 'test'
+    steps:
+      - run: echo "ENV - ${{github.event.inputs.env}}"    
