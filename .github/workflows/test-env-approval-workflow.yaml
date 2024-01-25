@@ -26,7 +26,7 @@ jobs:
     name: Deploy DEV
     runs-on: ubuntu-latest
     environment: dev
-    if: github.event.inputs.env == 'dev'
+    if: ${{ github.event.inputs.env }} == 'dev'
     steps:
       - run: echo "ENV - ${{github.event.inputs.env}}"
 
