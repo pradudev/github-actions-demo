@@ -3,6 +3,13 @@ name: 'Test ENV Approval Workflow'
 on:
   workflow_dispatch:
     inputs:
+      env:
+        type: choice
+        default: dev
+        options:
+          - dev
+          - test
+        description: Environment 
       query:
         type: string
         description: Az CLI query
@@ -18,24 +25,7 @@ jobs:
   deploy_dev:
     name: Deploy DEV
     runs-on: ubuntu-latest
-    environment: dev 
+    environment: dev
+    if: github.event.inputs.env == 'dev'
     steps:
-    # Checkout the repository to the GitHub Actions runner
-    - name: Checkout
-      uses: actions/checkout@v3.3.0
-      with:
-        submodules: true
-        fetch-depth: 0
-    
-    - name: Log in with Azure
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-        enable-AzPSSession: true
-
-    - name: Azure CLI script
-      uses: azure/CLI@v1
-      with:
-        azcliversion: latest
-        inlineScript: |
-          az group list --query "${{ inputs.query }} "
+      - run: echo "ENV - ${{github.event.inputs.env}}"
