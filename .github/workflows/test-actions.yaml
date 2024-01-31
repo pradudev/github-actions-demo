@@ -33,6 +33,8 @@ jobs:
           }
       - shell: bash
         run: |
+          echo "GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}"
+          echo "GITHUB_TOKEN: ${{ github.token }}"
           echo "CLIENT_ID: ${{ vars.CLIENT_ID }}"
           echo "CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}"
       - shell: bash
