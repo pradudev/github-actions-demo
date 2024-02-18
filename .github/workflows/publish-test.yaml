@@ -2,6 +2,11 @@ name: 'Test Publish Reports'
 
 on: [workflow_dispatch]
 
+permissions:
+  contents: read
+  checks: write
+  id-token: write
+
 jobs:
   dev:
     runs-on: ubuntu-latest
