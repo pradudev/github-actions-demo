@@ -23,16 +23,16 @@ jobs:
       #   with:
       #     report_paths: 'reports/junit-test-report.xml'  
           
-      # - name: Publish Test Report (dorny/test-reporter)
-      #   uses: dorny/test-reporter@v1
-      #   if: always()
-      #   with:
-      #     name: JEST Tests          
-      #     path: reports/junit-test-report.xml    
-      #     reporter: jest-junit         
-
-      - name: Publish Test Report (EnricoMi/publish-unit-test-result-action)
-        uses: EnricoMi/publish-unit-test-result-action/composite@v2
+      - name: Publish Test Report (dorny/test-reporter)
+        uses: dorny/test-reporter@v1
         if: always()
         with:
-          files: reports/junit-test-report.xml 
+          name: TESTS      
+          path: reports/junit-test-report.xml    
+          reporter: java-junit         
+
+      # - name: Publish Test Report (EnricoMi/publish-unit-test-result-action)
+      #   uses: EnricoMi/publish-unit-test-result-action/composite@v2
+      #   if: always()
+      #   with:
+      #     files: reports/junit-test-report.xml 
