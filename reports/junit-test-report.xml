@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="2" failures="1" errors="1" skipped="0">
+  <testsuite name="Tests for &quot;cusomer-pii&quot; network rules" time="5" tests="2" failures="1" errors="1" skipped="0">
+    <testcase classname="calico-network-rules" name="ALLOW traffic from POD (namespace: customer-pii1 | lables: app.kubernetes.io/component=controller, app.kubernetes.io/name=nginx-ingress) to SVC (namespace: customer-pii | lables: app=profile) on PORT 80" time="0">
+      <failure><![CDATA[Error: No pods found with labels "app.kubernetes.io/component=controller, app.kubernetes.io/name=nginx-ingress" in namespace "customer-pii1".
+    at Module.getPod (file:///d:/Projects/calico-network-rules-testing/src/k8s-helper.js:128:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Module.start (file:///d:/Projects/calico-network-rules-testing/src/test-runner.js:112:20)
+    at async main (file:///d:/Projects/calico-network-rules-testing/src/main.js:31:27)]]></failure>
+      <error message="No pods found with labels &quot;app.kubernetes.io/component=controller, app.kubernetes.io/name=nginx-ingress&quot; in namespace &quot;customer-pii1&quot;." type="FAIL"/>
+      <system-out><![CDATA[Ping response from debug container: N/A]]></system-out>
+    </testcase>
+    <testcase classname="calico-network-rules" name="ALLOW traffic from POD (namespace: customer-pii | lables: app.kubernetes.io/component=controller, app.kubernetes.io/name=nginx-ingress) to SVC (namespace: customer-pii | lables: app=consent) on PORT 80" time="5">
+      <system-out><![CDATA[Ping response from debug container: Reply from consent.customer-pii.svc.cluster.local (10.0.131.188) on port 80 time=1.592]]></system-out>
+    </testcase>
+  </testsuite>
+</testsuites>
