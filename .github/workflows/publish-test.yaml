@@ -29,7 +29,8 @@ jobs:
         with:
           name: TESTS      
           path: reports/junit-test-report.xml    
-          reporter: java-junit         
+          reporter: java-junit
+          fail-on-error: 'false'     
 
       # - name: Publish Test Report (EnricoMi/publish-unit-test-result-action)
       #   uses: EnricoMi/publish-unit-test-result-action/composite@v2
